@@ -1,3 +1,25 @@
 <%- include('../includes/head.ejs') %>
-<h1>Welcome to Register Page</h1>
-<%- include('../includes/footer.ejs') %>
+<link rel="stylesheet" href="/css/login.css">
+
+</head>
+
+<body>
+
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            <div class="fadeIn first">
+                <h2>Register</h2>
+            </div>
+            <form action="/register" method="POST">
+                <input type="text" id="login" class="fadeIn second" name="email" placeholder="example@gmail.com">
+                <input type="text" id="password" class="fadeIn third" name="password" placeholder="password">
+                <input type="text" id="password2" class="fadeIn third" name="password2" placeholder="password">
+                <input type="submit" class="fadeIn fourth" value="Sign In">
+            </form>
+            <div id="formFooter">
+                <a class="underlineHover" href="#">Don't have an account? Register!</a>
+            </div>
+
+        </div>
+    </div>
+    <%- include('../includes/footer.ejs') %>
