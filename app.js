@@ -1,11 +1,12 @@
-require('dotenv').config()
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const authRoutes = require('./routes/auth');
 const indexRoutes = require('./routes/index');
-const userRoutes = require('./routes/user')
+const userRoutes = require('./routes/user');
 
 const app = express();
 
@@ -22,10 +23,10 @@ const OPTS = {
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.static(path.join(__dirname, 'public')));
-
+app.use(express.urlencoded({ extended: false }));
 // Routes
 app.use('/auth', authRoutes);
-app.use('/user', userRoutes)
+app.use('/user', userRoutes);
 app.use('/', indexRoutes);
 
 // Connect to MongoDB
