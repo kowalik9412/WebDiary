@@ -3,13 +3,55 @@ const bcrypt = require('bcrypt');
 
 exports.getLoginPage = (req, res, next) => {
   res.render('auth/login', {
-    pageTitle: 'Login Page'
+    pageTitle: 'Sign In Page'
   });
+};
+
+exports.postLogin = (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  let errors = [];
+
+  User.findOne({ email: email })
+    .then(user => {
+      if (!user) {
+        errors.push({
+          message: 'This email does not exist in our database.'
+        });
+        res.render('auth/login', {
+          pageTitle: 'Sign In',
+          errors
+        });
+      }
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (result) {
+          res.redirect('/user/home');
+        } else {
+          errors.push({
+            message: 'Wrong password. Try again.'
+          });
+          res.render('auth/login', {
+            pageTitle: 'Sign In',
+            errors
+          });
+        }
+      });
+    })
+    .catch(error => {
+      errors.push({
+        message: 'Something went wrong. Try again.'
+      });
+      res.render('auth/login', {
+        pageTitle: 'Sign In',
+        errors
+      });
+      console.log(error);
+    });
 };
 
 exports.getRegisterPage = (req, res, next) => {
   res.render('auth/register', {
-    pageTitle: 'Register'
+    pageTitle: 'Sign Up'
   });
 };
 
@@ -30,7 +72,7 @@ exports.postRegister = (req, res, next) => {
 
   if (errors.length > 0) {
     res.render('auth/register', {
-      pageTitle: 'Register',
+      pageTitle: 'Sign Up',
       errors
     });
   } else {
@@ -39,7 +81,7 @@ exports.postRegister = (req, res, next) => {
         if (user) {
           errors.push({ message: 'User with this email exists' });
           res.render('auth/register', {
-            pageTitle: 'Register - User Exists',
+            pageTitle: 'Sign Up - User Exists',
             errors
           });
         } else {
@@ -52,12 +94,15 @@ exports.postRegister = (req, res, next) => {
               });
               user.save();
             })
+            .then(result => {
+              res.status('200').redirect('login');
+            })
             .catch(error => {
               errors.push({
                 message: 'Something went wrong with hashing password. Try again'
               });
               res.render('auth/register', {
-                pageTitle: 'Register',
+                pageTitle: 'Sign Up',
                 errors
               });
               console.log(error);
