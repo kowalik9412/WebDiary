@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const passport = require('passport');
 
 exports.getLoginPage = (req, res, next) => {
   res.render('auth/login', {
@@ -12,41 +13,53 @@ exports.postLogin = (req, res, next) => {
   const password = req.body.password;
   let errors = [];
 
-  User.findOne({ email: email })
-    .then(user => {
-      if (!user) {
-        errors.push({
-          message: 'This email does not exist in our database.'
-        });
-        res.render('auth/login', {
-          pageTitle: 'Sign In',
-          errors
-        });
-      }
-      bcrypt.compare(password, user.password, (err, result) => {
-        if (result) {
-          res.redirect('/user/home');
-        } else {
-          errors.push({
-            message: 'Wrong password. Try again.'
-          });
-          res.render('auth/login', {
-            pageTitle: 'Sign In',
-            errors
-          });
-        }
-      });
-    })
-    .catch(error => {
-      errors.push({
-        message: 'Something went wrong. Try again.'
-      });
-      res.render('auth/login', {
-        pageTitle: 'Sign In',
-        errors
-      });
-      console.log(error);
-    });
+  passport.authenticate('local', {
+    successRedirect: '/user/home',
+    failureRedirect: '/auth/login',
+    failureFlash: true
+  })(req, res, next);
+
+  // User.findOne({ email: email })
+  //   .then(user => {
+  //     if (!user) {
+  //       errors.push({
+  //         message: 'This email does not exist in our database.'
+  //       });
+  //       res.render('auth/login', {
+  //         pageTitle: 'Sign In',
+  //         errors
+  //       });
+  //     }
+  //     bcrypt.compare(password, user.password, (err, result) => {
+  //       if (result) {
+  //         res.redirect('/user/home');
+  //       } else {
+  //         errors.push({
+  //           message: 'Wrong password. Try again.'
+  //         });
+  //         res.render('auth/login', {
+  //           pageTitle: 'Sign In',
+  //           errors
+  //         });
+  //       }
+  //     });
+  //   })
+  //   .catch(error => {
+  //     errors.push({
+  //       message: 'Something went wrong. Try again.'
+  //     });
+  //     res.render('auth/login', {
+  //       pageTitle: 'Sign In',
+  //       errors
+  //     });
+  //     console.log(error);
+  //   });
+};
+
+exports.getLogout = (req, res, next) => {
+  req.logout();
+  req.flash('success_message', 'You have successfully logged out');
+  res.redirect('/auth/login');
 };
 
 exports.getRegisterPage = (req, res, next) => {
@@ -95,7 +108,8 @@ exports.postRegister = (req, res, next) => {
               user.save();
             })
             .then(result => {
-              res.status('200').redirect('login');
+              req.flash('success_message', 'You can now sign in');
+              res.redirect('login');
             })
             .catch(error => {
               errors.push({

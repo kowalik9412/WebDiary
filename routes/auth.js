@@ -9,6 +9,9 @@ router.get('/login', authController.getLoginPage);
 // POST Login
 router.post('/login', authController.postLogin);
 
+// POST Logout
+router.get('/logout', authController.getLogout);
+
 // GET Register Page
 router.get('/register', authController.getRegisterPage);
 
