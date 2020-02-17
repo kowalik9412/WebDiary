@@ -1,5 +1,10 @@
 exports.getIndexPage = (req, res, next) => {
-  res.render('auth/login', {
-    pageTitle: 'Login Page'
-  })
+  if (req.isAuthenticated()) {
+    res.render('user/main', {
+      pageTitle: 'Main Page'
+    });
+  } else {
+    req.flash('error_message', 'You are not logged in');
+    res.redirect('/auth/login');
+  }
 };
