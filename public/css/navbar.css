@@ -37,3 +37,7 @@ body {
 .navbar-brand {
   font-size: 18px;
 }
+.navbar-dark .navbar-nav .active > .nav-link,
+.navbar-dark .navbar-brand {
+  color: #000;
+}
