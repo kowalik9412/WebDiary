@@ -4,27 +4,94 @@
 
 <body>
   <div class="container-fluid">
-<nav class="navbar navbar-expand-md navbar-dark">
-  <a class="navbar-brand" href="/user/home">Chronic Pain Diary</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <nav class="navbar navbar-expand-md navbar-dark">
+    <a class="navbar-brand" href="/user/home">Chronic Pain Diary</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarsExample04">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="/user/home">Home <span class="sr-only">(current)</span></a>
-      </li>
-    </ul>
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="btn btn-signout" href="/auth/logout">Sign Out</a>
-      </li>
-    </ul>
+    <div class="collapse navbar-collapse" id="navbarsExample04">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/user/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="btn btn-signout" href="/auth/logout">Sign Out</a>
+        </li>
+      </ul>
+    </div>
+    </nav>
   </div>
-</nav>
-  </div>
-
 <h1>Welcome to User's Main Page</h1>
 <div><%= user %></div>
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRecordModal">
+  Add Record
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="addRecordModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addRecordModalTitle">Add Entry</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/user/add" method="post">
+          <div class="form-group">
+            <label class="control-label">Date</label>
+            <input type="date" name="date" id="dateInput">
+            <label class="control-label">Time</label>
+            <input type="time" name="time" id="timeInput">
+          </div>
+          <div class="form-group">
+            <label for="painLocationTextArea">Where is the pain?</label>
+            <textarea class="form-control" id="painLocationTextArea" name="painLocation" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="painDescriptionTextArea">What is the pain like?</label>
+            <textarea class="form-control" id="painDescriptionTextArea" name="painDescription" rows="3"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="painTriggerTextArea">What triggered the pain?</label>
+            <textarea class="form-control" id="painTriggerTextArea" name="painTrigger" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="painRelieveTextArea">What relieves the pain?</label>
+            <textarea class="form-control" id="painRelieveTextArea" name="painRelieve" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="painWorseTextArea">What makes it worse?</label>
+            <textarea class="form-control" id="painWorseTextArea" name="painWorse" rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="painLevelSelect">Pain Level (0 - no pain, 10 - severe)</label>
+            <select class="form-control" id="painLevelSelect" name="painLevel">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 <%- include('../includes/footer.ejs') %>

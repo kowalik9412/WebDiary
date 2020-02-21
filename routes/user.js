@@ -8,4 +8,7 @@ const router = express.Router();
 // GET Main Page
 router.get('/home', authentication, userController.getMainPage);
 
+// POST Add Record
+router.post('/add', authentication, userController.postAddRecord);
+
 module.exports = router;
