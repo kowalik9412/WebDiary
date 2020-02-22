@@ -68,7 +68,7 @@ exports.postAddRecord = (req, res, next) => {
 
 exports.getEntries = (req, res, next) => {
   const userId = req.user._id;
-  Entry.find()
+  Entry.find({ 'metadata.userId': userId })
     .then(entries => {
       console.log(entries);
       res.redirect('/user/home');
