@@ -11,4 +11,6 @@ router.get('/home', authentication, userController.getMainPage);
 // POST Add Record
 router.post('/add', authentication, userController.postAddRecord);
 
+router.get('/getentries', userController.getEntries);
+
 module.exports = router;

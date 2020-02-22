@@ -20,16 +20,22 @@ exports.postAddRecord = (req, res, next) => {
     painLev = req.body.painLevel;
 
   const entry = new Entry({
-    date: date,
-    time: time,
-    painLoc: painLoc,
-    painDesc: painDesc,
-    painTrig: painTrig,
-    painRel: painRel,
-    painWors: painWor,
-    painLev: painLev,
-    dateCreated: dateCreated,
-    userId: req.user._id
+    timeStamp: {
+      date: date,
+      time: time
+    },
+    data: {
+      painLoc: painLoc,
+      painDesc: painDesc,
+      painTrig: painTrig,
+      painRel: painRel,
+      painWors: painWor,
+      painLev: painLev
+    },
+    metadata: {
+      dateCreated: dateCreated,
+      userId: req.user._id
+    }
   });
   entry
     .save()
@@ -45,6 +51,7 @@ exports.getEntries = (req, res, next) => {
   Entry.find()
     .populate('userId')
     .then(result => {
+      console.log(result);
       res.redirect('/user/home');
     })
     .catch(error => {
