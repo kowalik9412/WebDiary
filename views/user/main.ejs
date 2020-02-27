@@ -56,6 +56,7 @@
         <td>
           <form action="/user/delete/<%= entries._id %>" method="POST">
             <button class="btn btn-danger" type="submit" name="deleteRecordButton">Delete</button>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
           </form>
         </td>
       </tr>
@@ -130,6 +131,7 @@
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-success">Save</button>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
       </div>
         </form>
       </div>

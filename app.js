@@ -7,6 +7,7 @@ const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('passport');
 const passportLocal = require('passport-local');
+const csrf = require('csurf');
 
 const authRoutes = require('./routes/auth');
 const indexRoutes = require('./routes/index');
@@ -15,6 +16,7 @@ const userRoutes = require('./routes/user');
 require('./util/passport')(passport);
 
 const app = express();
+const csrfProtect = csrf();
 
 // Global Variables
 const PORT = process.env.PORT || 1010;
@@ -40,11 +42,18 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(csrfProtect);
 app.use(flash());
 app.use((req, res, next) => {
   res.locals.success_message = req.flash('success_message');
   res.locals.error_message = req.flash('error_message');
   res.locals.error = req.flash('error');
+  next();
+});
+
+// Include csrf token in every route
+app.use((req, res, next) => {
+  res.locals.csrfToken = req.csrfToken();
   next();
 });
 
