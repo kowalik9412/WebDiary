@@ -55,6 +55,7 @@ app.use('/', indexRoutes);
 
 // Connect to MongoDB
 mongoose
+  .set('useFindAndModify', false)
   .connect(MONGODB_URI, OPTS)
   .then(result => {
     app.listen(PORT, () => {

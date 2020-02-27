@@ -11,6 +11,13 @@ router.get('/home', authentication, userController.getMainPage);
 // POST Add Record
 router.post('/add', authentication, userController.postAddRecord);
 
-router.get('/getentries', userController.getEntries);
+// GET Edit Record
+router.get('/edit/:id', authentication, userController.getEditRecord);
+
+// POST Edit Record
+router.post('/edit/:id', authentication, userController.postEditRecord);
+
+// POST Delete Record
+router.post('/delete/:id', authentication, userController.postDeleteRecord);
 
 module.exports = router;

@@ -1,0 +1,76 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/navbar.css">
+</head>
+
+<body>
+  <div class="container-fluid">
+    <nav class="navbar navbar-expand-md navbar-dark">
+    <a class="navbar-brand" href="/user/home">Chronic Pain Diary</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample04">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/user/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="btn btn-signout" href="/auth/logout">Sign Out</a>
+        </li>
+      </ul>
+    </div>
+    </nav>
+  </div>
+<div>
+
+<div class="container">
+            <form action="/user/edit/<%= entry._id %>" method="post">
+          <div class="form-group">
+            <label class="control-label">Date</label>
+            <input type="date" name="date" value="<%= entry.timeStamp.date %>" id="dateInput">
+            <label class="control-label">Time</label>
+            <input type="time" name="time" id="timeInput" value="<%= entry.timeStamp.time %>">
+          </div>
+          <div class="form-group">
+            <label for="painLocationTextArea">Where is the pain?</label>
+            <textarea class="form-control" id="painLocationTextArea" name="painLocation" rows="2"><%= entry.data.painLoc %></textarea>
+          </div>
+          <div class="form-group">
+            <label for="painDescriptionTextArea">What is the pain like?</label>
+            <textarea class="form-control" id="painDescriptionTextArea" name="painDescription" rows="3"><%= entry.data.painDesc %></textarea>
+          </div>
+          <div class="form-group">
+            <label for="painTriggerTextArea">What triggered the pain?</label>
+            <textarea class="form-control" id="painTriggerTextArea" name="painTrigger" rows="2"><%= entry.data.painTrig %></textarea>
+          </div>
+          <div class="form-group">
+            <label for="painRelieveTextArea">What relieves the pain?</label>
+            <textarea class="form-control" id="painRelieveTextArea" name="painRelieve" rows="2"><%= entry.data.painRel %></textarea>
+          </div>
+          <div class="form-group">
+            <label for="painWorseTextArea">What makes it worse?</label>
+            <textarea class="form-control" id="painWorseTextArea" name="painWorse" rows="2"><%= entry.data.painWors %></textarea>
+          </div>
+          <div class="form-group">
+            <label for="painLevelSelect">Pain Level (0 - no pain, 10 - severe)</label>
+            <select class="form-control" id="painLevelSelect" name="painLevel" value="<%= entry.data.painLev %>">
+              <option value="0">0</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+            </select>
+          </div>
+            <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+</div>
+<%- include('../includes/footer.ejs') %>
