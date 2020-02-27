@@ -12,6 +12,9 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  confirmToken: String,
+  confirmTokenTime: Date,
+  isConfirmed: Boolean,
   resetToken: String,
   resetTokenTime: Date,
   entries: [{ type: Schema.Types.ObjectId, ref: 'Entry' }]
