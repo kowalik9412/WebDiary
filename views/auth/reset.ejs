@@ -8,19 +8,16 @@
     <div class="wrapper fadeInDown">
         <div id="formContent">
             <div class="fadeIn first">
-                <h2>Sign In</h2>
+                <h2>Reset Password</h2>
                 <%- include('../includes/errors.ejs') %>
             </div>
-            <form action="/auth/login" method="POST">
+            <form action="/auth/reset" method="POST">
                 <input type="text" id="login" class="fadeIn second" name="email" placeholder="example@gmail.com" ">
-                <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
-                <input type="submit" class="fadeIn fourth" value="Sign In">
+                <input type="submit" class="fadeIn fourth" value="Reset Password">
                 <input type="hidden" name="_csrf" value="<%= csrfToken %>">
             </form>
             <div id="formFooter">
                 <a class="underlineHover" href="/auth/register">Don't you have an account? Sign Up!</a>
-                <br>
-                <a class="underlineHover" href="/auth/reset">Reset your password</a>
             </div>
 
         </div>

@@ -18,4 +18,7 @@ router.get('/register', authController.getRegisterPage);
 // POST Register
 router.post('/register', authController.postRegister);
 
+// GET Reset Password Page
+router.get('/reset', authController.getResetPage);
+
 module.exports = router;

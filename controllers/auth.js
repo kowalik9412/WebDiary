@@ -88,3 +88,9 @@ exports.postRegister = (req, res, next) => {
       });
   }
 };
+
+exports.getResetPage = (req, res, next) => {
+  res.render('auth/reset', {
+    pageTitle: 'Reset your password'
+  });
+};
