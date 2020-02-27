@@ -134,8 +134,7 @@ exports.postReset = (req, res, next) => {
           from: 'resetPassword@webDiary.com',
           subject: 'Reset Password',
           html: `
-            <p>Hello, you have requested a password reset</p>
-            <p>Click <a href="http://localhost:1010/auth/reset/${token}">here</a> to reset your password now</p>
+            <p>Click <a href="http://localhost:1010/auth/reset/newpassword/${token}">here</a> to reset your password now</p>
           `
         });
       })
@@ -143,4 +142,63 @@ exports.postReset = (req, res, next) => {
         console.log(error);
       });
   });
+};
+
+exports.getNewPassword = (req, res, next) => {
+  const token = req.params.token;
+  User.findOne({ resetToken: token, resetTokenTime: { $gt: Date.now() } })
+    .then(user => {
+      res.render('auth/password', {
+        pageTitle: 'Update your password',
+        userId: user._id.toString(),
+        passwordToken: token
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
+
+exports.postNewPassword = (req, res, next) => {
+  const password1 = req.body.password,
+    password2 = req.body.password2,
+    userId = req.body.userId,
+    passwordToken = req.body.passwordToken;
+  let errors = [];
+  let resetUser;
+
+  if (password1 !== password2) {
+    errors.push({ message: 'Passwords do not match' });
+  }
+
+  if (errors.length > 0) {
+    res.render('auth/register', {
+      pageTitle: 'Sign Up',
+      errors
+    });
+  } else {
+    User.findOne({
+      resetToken: passwordToken,
+      resetTokenTime: { $gt: Date.now() },
+      _id: userId
+    })
+      .then(user => {
+        resetUser = user;
+        bcrypt
+          .hash(password1, 10)
+          .then(hashedPassword => {
+            resetUser.password = hashedPassword;
+            resetUser.resetToken = undefined;
+            resetUser.resetTokenTime = undefined;
+            return resetUser.save();
+          })
+          .then(result => {
+            req.flash('success_message', 'Password has been updated');
+            res.redirect('/auth/login');
+          });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  }
 };
