@@ -24,13 +24,48 @@
     </div>
     </nav>
   </div>
-<h1>Welcome to User's Main Page</h1>
-<div><%= user %></div>
-<!-- Button trigger modal -->
+<div>
+  <div class="container">
+    <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Time</th>
+        <th scope="col">Pain Location</th>
+        <th scope="col">Pain Description</th>
+        <th scope="col">Triggered by</th>
+        <th scope="col">Relieved by</th>
+        <th scope="col">Worsen by</th>
+        <th scope="col">Pain Level</th>
+      </tr>
+    </thead>
+    <% if(entry.length > 0){ %>
+    <tbody>
+      <% for(let entries of entry ){ %>
+      <tr>
+        <td><%= entries.timeStamp.date %></td>
+        <td><%= entries.timeStamp.time %></td>
+        <td><%= entries.data.painLoc %></td>
+        <td><%= entries.data.painDesc %></td>
+        <td><%= entries.data.painTrig %></td>
+        <td><%= entries.data.painRel %></td>
+        <td><%= entries.data.painWors %></td>
+        <td><%= entries.data.painLev %></td>
+      </tr>
+      <% } %>
+    <% } else { %>
+      <tr>
+        <td colspan="8">No Data</td>
+      </tr>
+    <% } %>
+    </tbody>
+  </table>
+  <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addRecordModal">
   Add Record
 </button>
-<a href="/user/getEntries">Get entries</a>
+  </div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="addRecordModalTitle" aria-hidden="true">

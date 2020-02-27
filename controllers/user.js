@@ -2,11 +2,18 @@ const Entry = require('../models/entry');
 const User = require('../models/user');
 
 exports.getMainPage = (req, res, next) => {
-  const user = req.user;
-  res.render('user/main', {
-    pageTitle: 'Home',
-    user
-  });
+  const userId = req.user._id;
+  Entry.find({ 'metadata.userId': userId })
+    .then(entries => {
+      console.log(entries);
+      res.render('user/main', {
+        pageTitle: 'Home',
+        entry: entries
+      });
+    })
+    .catch(error => {
+      console.log(error);
+    });
 };
 
 exports.postAddRecord = (req, res, next) => {
@@ -39,14 +46,6 @@ exports.postAddRecord = (req, res, next) => {
       userId: req.user._id
     }
   });
-  // entry
-  //   .save()
-  //   .then(result => {
-  //     res.redirect('/user/home')
-  //   })
-  //   .catch(error => {
-  //     console.log(error);
-  //   });
   entry
     .save()
     .then(result => {

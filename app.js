@@ -18,8 +18,8 @@ const app = express();
 
 // Global Variables
 const PORT = process.env.PORT || 1010;
-const MONGODB_URI = `${process.env.MONGODB}`;
-// const MONGODB_URI = `${process.env.MONGODBLOCAL}`;
+// const MONGODB_URI = `${process.env.MONGODB}`;
+const MONGODB_URI = `${process.env.MONGODBLOCAL}`;
 const OPTS = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
