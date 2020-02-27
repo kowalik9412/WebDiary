@@ -1,6 +1,17 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 const passport = require('passport');
+const nodemailer = require('nodemailer');
+const sendGrid = require('nodemailer-sendgrid-transport');
+
+const transporter = nodemailer.createTransport(
+  sendGrid({
+    auth: {
+      api_key: `${process.env.NODEMAILERAPIKEY}`
+    }
+  })
+);
 
 exports.getLoginPage = (req, res, next) => {
   res.render('auth/login', {
@@ -92,5 +103,44 @@ exports.postRegister = (req, res, next) => {
 exports.getResetPage = (req, res, next) => {
   res.render('auth/reset', {
     pageTitle: 'Reset your password'
+  });
+};
+
+exports.postReset = (req, res, next) => {
+  const email = req.body.email;
+  crypto.randomBytes(32, (error, buffer) => {
+    if (error) {
+      console.log(error);
+      return res.redirect('/auth/reset');
+    }
+
+    const token = buffer.toString('hex');
+    User.findOne({ email: email })
+      .then(user => {
+        if (!user) {
+          req.flash('error_message', 'Invalid credentials');
+          return res.redirect('/auth/reset');
+        }
+
+        user.resetToken = token;
+        user.resetTokenTime = Date.now() + 3600000; // 1hr
+        return user.save();
+      })
+      .then(result => {
+        req.flash('success_message', 'Check your email');
+        res.redirect('login');
+        transporter.sendMail({
+          to: email,
+          from: 'resetPassword@webDiary.com',
+          subject: 'Reset Password',
+          html: `
+            <p>Hello, you have requested a password reset</p>
+            <p>Click <a href="http://localhost:1010/auth/reset/${token}">here</a> to reset your password now</p>
+          `
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
   });
 };

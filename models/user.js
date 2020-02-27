@@ -12,6 +12,8 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  resetToken: String,
+  resetTokenTime: Date,
   entries: [{ type: Schema.Types.ObjectId, ref: 'Entry' }]
 });
 
