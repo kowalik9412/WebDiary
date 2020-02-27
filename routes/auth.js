@@ -30,4 +30,7 @@ router.get('/reset/newpassword/:token', authController.getNewPassword);
 // POST Update Password
 router.post('/reset/newpassword', authController.postNewPassword);
 
+// GET Verify Email Page
+router.get('/login/verifyemail/:token', authController.getVerifyEmailPage);
+
 module.exports = router;
