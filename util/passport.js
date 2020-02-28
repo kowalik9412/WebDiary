@@ -10,14 +10,19 @@ module.exports = function(passport) {
       User.findOne({ email: email })
         .then(user => {
           if (!user) {
-            return done(null, false, { message: 'Invalid credentials' });
+            return done(null, false, {
+              message: 'This email does not exist in our database'
+            });
+          } else if (!user.isConfirmed) {
+            return done(null, false, {
+              message: 'Your email has not been verified'
+            });
           }
 
           bcrypt.compare(password, user.password, (error, isMatch) => {
             if (error) {
               throw error;
             }
-
             if (isMatch) {
               return done(null, user);
             } else {

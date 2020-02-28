@@ -230,20 +230,30 @@ exports.postNewPassword = (req, res, next) => {
 exports.getVerifyEmailPage = (req, res, next) => {
   const token = req.params.token;
 
+  const sleep = milliseconds => {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+  };
+
   User.findOne({
     confirmToken: token,
     confirmTokenTime: { $gt: Date.now() }
   })
     .then(user => {
       if (!user) {
+        req.flash(
+          'failure_message',
+          'Something went wrong with verifying your email'
+        );
         return res.redirect('/auth/login');
       }
-      user.confirmToken = undefined;
-      user.confirmTokenTime = undefined;
-      user.isConfirmed = true;
-      user.save();
-      req.flash('success_message', 'You have been verified');
-      return res.redirect('/auth/login');
+      sleep(2000).then(() => {
+        user.confirmToken = undefined;
+        user.confirmTokenTime = undefined;
+        user.isConfirmed = true;
+        user.save();
+        req.flash('success_message', 'You have been verified');
+        return res.redirect('/auth/login');
+      });
     })
     .catch(error => {
       console.log(error);
