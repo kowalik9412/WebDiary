@@ -12,7 +12,7 @@
                 <%- include('../includes/errors.ejs') %>
             </div>
             <form action="/auth/register" method="POST">
-                <input type="text" id="login" class="fadeIn second" name="email" placeholder="example@gmail.com" ">
+                <input type="text" id="login" class="fadeIn second" name="email" placeholder="example@gmail.com" value="<%= userInput.email %>"  ">
                 <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
                 <input type="password" id="password2" class="fadeIn third" name="password2" placeholder="password">
                 <input type="submit" class="fadeIn fourth" value="Sign Up">

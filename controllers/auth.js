@@ -35,7 +35,10 @@ exports.getLogout = (req, res, next) => {
 
 exports.getRegisterPage = (req, res, next) => {
   res.render('auth/register', {
-    pageTitle: 'Sign Up'
+    pageTitle: 'Sign Up',
+    userInput: {
+      email: ''
+    }
   });
 };
 
@@ -66,6 +69,9 @@ exports.postRegister = (req, res, next) => {
     if (errors.length > 0) {
       res.render('auth/register', {
         pageTitle: 'Sign Up',
+        userInput: {
+          email
+        },
         errors
       });
     } else {
