@@ -179,7 +179,7 @@ exports.getNewPassword = (req, res, next) => {
   User.findOne({ resetToken: token, resetTokenTime: { $gt: Date.now() } })
     .then(user => {
       res.render('auth/password', {
-        pageTitle: 'Update your password',
+        pageTitle: 'Update Password',
         userId: user._id.toString(),
         passwordToken: token
       });
@@ -197,15 +197,21 @@ exports.postNewPassword = (req, res, next) => {
   let errors = [];
   let resetUser;
 
+  if (password1.length == 0 || password2.length == 0) {
+    errors.push({ message: 'Missing credentials' });
+  }
+
   if (password1 !== password2) {
     errors.push({ message: 'Passwords do not match' });
   }
 
   if (errors.length > 0) {
-    res.render('auth/register', {
-      pageTitle: 'Sign Up',
-      errors
-    });
+    req.flash('error_message', 'Missing Credentials');
+    res.redirect(`/auth/reset/newpassword/${passwordToken}`);
+    // res.render(`auth/reset/newpassword/${passwordToken}`, {
+    //   pageTitle: 'Update Password',
+    //   errors
+    // });
   } else {
     User.findOne({
       resetToken: passwordToken,
