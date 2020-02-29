@@ -57,9 +57,9 @@ exports.postRegister = (req, res, next) => {
 
     // Validate input
 
-    // if (!email || !password || password2) {
-    //   errors.push({ message: 'Missing fields' });
-    // }
+    if (email.length == 0 || password.length == 0 || password2.length == 0) {
+      errors.push({ message: 'Missing credentials' });
+    }
     if (password !== password2) {
       errors.push({
         message: 'Passwords do not match'
