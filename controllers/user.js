@@ -8,7 +8,8 @@ exports.getMainPage = (req, res, next) => {
     .then(entries => {
       res.render('user/main', {
         pageTitle: 'Home',
-        entry: entries
+        entry: entries,
+        userInput: ''
       });
     })
     .catch(error => {
@@ -142,10 +143,13 @@ exports.postFuzzySearch = (req, res, next) => {
         'data.painWors',
         'data.painLev'
       ]);
-      const lookup = searchOptions.search(userInput);
+      const lookup = searchOptions.search(userInput, {
+        sort: true
+      });
       res.render('user/main', {
         pageTitle: 'Home',
-        entry: lookup
+        entry: lookup,
+        userInput: userInput
       });
     })
     .catch(error => {

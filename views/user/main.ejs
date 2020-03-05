@@ -30,10 +30,14 @@
       <div class="form-row align-items-center">
         <div class="col-sm-3 my-1">
           <label class="sr-only" for="inlineFormRecird">Record</label>
-          <input name="searchAnything" type="text" class="form-control" id="inlineFormRecird" placeholder="Anything..">
+          <input name="searchAnything" type="text" class="form-control" id="inlineFormRecird" placeholder="<% if(userInput) {%>
+            <%= userInput %>
+            <% }%>">
+          <input name="searchAnything" type="text" class="form-control" id="inlineFormRecird" placeholder="<%= userInput? <%= userInput %> : Filter %>">
         </div>
         <div class="col-auto my-1">
           <button type="submit" class="btn btn-primary">Search</button>
+          <a href="/user/home" class="btn btn-primary">Reset</a>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </div>
       </div>

@@ -2,6 +2,10 @@ body {
   font-family: 'Poppins', sans-serif;
   height: 100vh;
 }
+h3 {
+  text-align: center;
+  margin: 2rem 0;
+}
 .container-fluid {
   padding: 0;
 }
