@@ -28,6 +28,7 @@
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "fuzzy-search": "^3.2.1",
     "mongoose": "^5.8.11",
     "nodemailer": "^6.4.3",
     "nodemailer-sendgrid-transport": "^0.2.0",

@@ -1,5 +1,6 @@
 const Entry = require('../models/entry');
 const User = require('../models/user');
+const fuzzySearch = require('fuzzy-search');
 
 exports.getMainPage = (req, res, next) => {
   const userId = req.user._id;
@@ -122,5 +123,33 @@ exports.postDeleteRecord = (req, res, next) => {
     })
     .catch(error => {
       console.log(error);
+    });
+};
+
+exports.postFuzzySearch = (req, res, next) => {
+  const userInput = req.body.searchAnything;
+  const userId = req.user._id;
+
+  Entry.find({ 'metadata.userId': userId })
+    .then(entries => {
+      const searchOptions = new fuzzySearch(entries, [
+        'timeStamp.date',
+        'timeStamp.time',
+        'data.painLoc',
+        'data.painDesc',
+        'data.painTrig',
+        'data.painRel',
+        'data.painWors',
+        'data.painLev'
+      ]);
+      const lookup = searchOptions.search(userInput);
+      res.render('user/main', {
+        pageTitle: 'Home',
+        entry: lookup
+      });
+    })
+    .catch(error => {
+      console.log(error);
+      res.redirect('/user/home');
     });
 };

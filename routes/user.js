@@ -20,4 +20,7 @@ router.post('/edit/:id', authentication, userController.postEditRecord);
 // POST Delete Record
 router.post('/delete/:id', authentication, userController.postDeleteRecord);
 
+// POST Fuzzy Search
+router.post('/search', authentication, userController.postFuzzySearch);
+
 module.exports = router;

@@ -26,6 +26,20 @@
   </div>
 <div>
   <div class="container">
+    <form action="/user/search" method="post">
+      <div class="form-row align-items-center">
+        <div class="col-sm-3 my-1">
+          <label class="sr-only" for="inlineFormRecird">Record</label>
+          <input name="searchAnything" type="text" class="form-control" id="inlineFormRecird" placeholder="Anything..">
+        </div>
+        <div class="col-auto my-1">
+          <button type="submit" class="btn btn-primary">Search</button>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="container">
     <h3>Your Entries</h3>
     <table class="table table-hover">
     <thead>
