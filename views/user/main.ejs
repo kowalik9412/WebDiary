@@ -30,7 +30,12 @@
       <div class="form-row align-items-center">
         <div class="col-sm-3 my-1">
           <label class="sr-only" for="inlineFormRecird">Record</label>
-          <input name="searchAnything" type="text" class="form-control" id="inlineFormRecird" placeholder="<% if(userInput) {%><%= userInput %><% }%>">
+          <input name="searchAnything" type="text" class="form-control" id="inlineFormRecird" placeholder="
+          <% if(userInput) {%>
+            <%= userInput %>
+          <% } else {%>
+            Filter
+          <% } %>">
         </div>
         <div class="col-auto my-1">
           <button type="submit" class="btn btn-primary">Search</button>
