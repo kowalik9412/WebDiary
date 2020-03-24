@@ -6,7 +6,8 @@ exports.getIndexPage = (req, res, next) => {
     .then(entries => {
       res.render('user/main', {
         pageTitle: 'Home',
-        entry: entries
+        entry: entries,
+        userInput: ''
       });
     })
     .catch(error => {

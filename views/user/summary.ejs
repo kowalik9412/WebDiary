@@ -1,0 +1,104 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/navbar.css">
+</head>
+
+<body>
+    <div class="container">
+    <nav class="navbar navbar-expand-md navbar-dark">
+    <a class="navbar-brand" href="/user/home">Chronic Pain Diary</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample04" aria-controls="navbarsExample04" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarsExample04">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/user/home">Home <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown navbar-brand">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-user-circle"></i>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/auth/logout">
+            <i class="fas fa-sign-out-alt"></i>Sign Out
+          </a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Change Password</a>
+        </div>
+        </li>
+      </ul>
+    </div>
+    </nav>
+  </div>
+      <div class="container">
+    <form action="/user/search" method="post">
+      <div class="form-row align-items-center">
+        <div class="col-sm-3 my-1">
+          <label class="sr-only" for="inlineFormRecird">Record</label>
+          <input name="searchAnything" type="text" class="form-control" id="inlineFormRecird" placeholder="
+          <% if(userInput) {%>
+            <%= userInput %>
+          <% } else {%>
+            Filter
+          <% } %>">
+          <input type="hidden" name="startDate" value="<%= startDate %>">
+          <input type="hidden" name="endDate" value="<%= endDate %>">
+        </div>
+        <div class="col-auto my-1">
+          <button type="submit" class="btn btn-primary">Search/Cancel</button>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        </div>
+      </div>
+    </form>
+  </div>
+    <div class="container">
+    <h3>Your Entries from <%= startDate %> to <%= endDate %></h3>
+    <a href="/user/home" class="btn btn-primary">Back</a>
+    <table class="table table-search table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Time</th>
+        <th scope="col">Pain Location</th>
+        <th scope="col">Pain Description</th>
+        <th scope="col">Triggered by</th>
+        <th scope="col">Relieved by</th>
+        <th scope="col">Worsen by</th>
+        <th scope="col">Pain Level</th>
+      </tr>
+    </thead>
+    <% if(entry.length > 0){ %>
+    <tbody>
+      <% for(let entries of entry ){ %>
+      <tr>
+        <td><%= entries.timeStamp.date %></td>
+        <td><%= entries.timeStamp.time %></td>
+        <td><%= entries.data.painLoc %></td>
+        <td><%= entries.data.painDesc %></td>
+        <td><%= entries.data.painTrig %></td>
+        <td><%= entries.data.painRel %></td>
+        <td><%= entries.data.painWors %></td>
+        <td><%= entries.data.painLev %></td>
+        <td><a href="/user/edit/<%= entries._id %>" class="btn btn-warning">Edit</a></td>
+        <td>
+          <form action="/user/delete/<%= entries._id %>" method="POST">
+            <button class="btn btn-danger" type="submit" name="deleteRecordButton">Delete</button>
+            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          </form>
+        </td>
+      </tr>
+      <% } %>
+    <% } else { %>
+      <tr>
+        <td colspan="8">No Data</td>
+      </tr>
+    <% } %>
+    </tbody>
+  </table>
+  </div>
+</body>
+
+<%- include('../includes/footer.ejs') %>

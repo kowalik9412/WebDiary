@@ -27,51 +27,51 @@
 <div>
 
 <div class="container">
-            <form action="/user/edit/<%= entry._id %>" method="post">
-          <div class="form-group">
-            <label class="control-label">Date</label>
-            <input type="date" name="date" value="<%= entry.timeStamp.date %>" id="dateInput">
-            <label class="control-label">Time</label>
-            <input type="time" name="time" id="timeInput" value="<%= entry.timeStamp.time %>">
-          </div>
-          <div class="form-group">
-            <label for="painLocationTextArea">Where is the pain?</label>
-            <textarea class="form-control" id="painLocationTextArea" name="painLocation" rows="2"><%= entry.data.painLoc %></textarea>
-          </div>
-          <div class="form-group">
-            <label for="painDescriptionTextArea">What is the pain like?</label>
-            <textarea class="form-control" id="painDescriptionTextArea" name="painDescription" rows="3"><%= entry.data.painDesc %></textarea>
-          </div>
-          <div class="form-group">
-            <label for="painTriggerTextArea">What triggered the pain?</label>
-            <textarea class="form-control" id="painTriggerTextArea" name="painTrigger" rows="2"><%= entry.data.painTrig %></textarea>
-          </div>
-          <div class="form-group">
-            <label for="painRelieveTextArea">What relieves the pain?</label>
-            <textarea class="form-control" id="painRelieveTextArea" name="painRelieve" rows="2"><%= entry.data.painRel %></textarea>
-          </div>
-          <div class="form-group">
-            <label for="painWorseTextArea">What makes it worse?</label>
-            <textarea class="form-control" id="painWorseTextArea" name="painWorse" rows="2"><%= entry.data.painWors %></textarea>
-          </div>
-          <div class="form-group">
-            <label for="painLevelSelect">Pain Level (0 - no pain, 10 - severe)</label>
-            <select class="form-control" id="painLevelSelect" name="painLevel" value="<%= entry.data.painLev %>">
-              <option value="0">0</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
-            </select>
-          </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        </form>
+  <form action="/user/edit/<%= entry._id %>" method="post" autocomplete="off">
+    <div class="form-group">
+      <label class="control-label">Date</label>
+      <input id="datepicker" name="date" value="<%= entry.timeStamp.date %>" id="dateInput" />
+      <label class="control-label">Time</label>
+      <input id="timepicker" name="time" value="<%= entry.timeStamp.time %>"/>
+    </div>
+    <div class="form-group">
+      <label for="painLocationTextArea">Where is the pain?</label>
+      <textarea class="form-control" id="painLocationTextArea" name="painLocation" rows="2"><%= entry.data.painLoc %></textarea>
+    </div>
+    <div class="form-group">
+      <label for="painDescriptionTextArea">What is the pain like?</label>
+      <textarea class="form-control" id="painDescriptionTextArea" name="painDescription" rows="3"><%= entry.data.painDesc %></textarea>
+    </div>
+    <div class="form-group">
+      <label for="painTriggerTextArea">What triggered the pain?</label>
+      <textarea class="form-control" id="painTriggerTextArea" name="painTrigger" rows="2"><%= entry.data.painTrig %></textarea>
+    </div>
+    <div class="form-group">
+      <label for="painRelieveTextArea">What relieves the pain?</label>
+      <textarea class="form-control" id="painRelieveTextArea" name="painRelieve" rows="2"><%= entry.data.painRel %></textarea>
+    </div>
+    <div class="form-group">
+      <label for="painWorseTextArea">What makes it worse?</label>
+      <textarea class="form-control" id="painWorseTextArea" name="painWorse" rows="2"><%= entry.data.painWors %></textarea>
+    </div>
+    <div class="form-group">
+      <label for="painLevelSelect">Pain Level (0 - no pain, 10 - severe)</label>
+      <select class="form-control" id="painLevelSelect" name="painLevel" value="<%= entry.data.painLev %>">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+        <option value="9">9</option>
+        <option value="10">10</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+  </form>
 </div>
 <%- include('../includes/footer.ejs') %>

@@ -1,5 +1,6 @@
 const express = require('express');
 const userController = require('../controllers/user');
+const { check } = require('express-validator');
 
 const authentication = require('../util/isAuth');
 
@@ -22,5 +23,8 @@ router.post('/delete/:id', authentication, userController.postDeleteRecord);
 
 // POST Fuzzy Search
 router.post('/search', authentication, userController.postFuzzySearch);
+
+// POST Date Search
+router.post('/search-date', authentication, userController.postDateSearch);
 
 module.exports = router;

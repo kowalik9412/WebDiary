@@ -130,11 +130,15 @@ exports.postDeleteRecord = (req, res, next) => {
 exports.postFuzzySearch = (req, res, next) => {
   const userInput = req.body.searchAnything;
   const userId = req.user._id;
+  const start = req.body.startDate;
+  const end = req.body.endDate;
 
-  Entry.find({ 'metadata.userId': userId })
+  Entry.find({
+    'metadata.userId': userId,
+    'timeStamp.date': { $gte: start, $lte: end }
+  })
     .then(entries => {
       const searchOptions = new fuzzySearch(entries, [
-        'timeStamp.date',
         'timeStamp.time',
         'data.painLoc',
         'data.painDesc',
@@ -146,9 +150,12 @@ exports.postFuzzySearch = (req, res, next) => {
       const lookup = searchOptions.search(userInput, {
         sort: true
       });
-      res.render('user/main', {
-        pageTitle: 'Home',
+
+      res.render('user/summary', {
+        pageTitle: 'Summary',
         entry: lookup,
+        startDate: start,
+        endDate: end,
         userInput: userInput
       });
     })
@@ -156,4 +163,25 @@ exports.postFuzzySearch = (req, res, next) => {
       console.log(error);
       res.redirect('/user/home');
     });
+};
+
+exports.postDateSearch = (req, res, next) => {
+  const start = req.body.start;
+  const end = req.body.end;
+  const userId = req.user._id;
+
+  Entry.find({
+    'metadata.userId': userId,
+    'timeStamp.date': { $gte: start, $lte: end }
+  })
+    .then(entry => {
+      res.render('user/summary', {
+        pageTitle: 'Summary',
+        entry: entry,
+        startDate: start,
+        endDate: end,
+        userInput: ''
+      });
+    })
+    .catch(error => console.log(error));
 };

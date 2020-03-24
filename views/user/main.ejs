@@ -34,7 +34,7 @@
     </nav>
   </div>
 <div>
-  <div class="container">
+  <!-- <div class="container">
     <form action="/user/search" method="post">
       <div class="form-row align-items-center">
         <div class="col-sm-3 my-1">
@@ -53,9 +53,27 @@
         </div>
       </div>
     </form>
-  </div>
+  </div> -->
   <div class="container">
     <h3>Your Entries</h3>
+    <form action="/user/search-date" method="post" autocomplete="off">
+      <div class="form-row align-items-center">
+        <div class="col-sm-3 my-1 filter-box">
+          <label class="sr-only" for="inlineFormRecird">Date Search</label>
+          <div class="col-box">
+            <input id="startDate" name="start" placeholder="Start Date" />
+          </div>
+          <div class="col-box">
+            <input id="endDate" name="end" placeholder="End Date" />
+          </div>
+        </div>
+        <div class="col-auto my-1">
+          <button type="submit" class="btn btn-primary">Search</button>
+          <a href="/user/home" class="btn btn-primary">Reset</a>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+        </div>
+      </div>
+    </form>
     <table class="table table-hover">
     <thead>
       <tr>
@@ -114,12 +132,12 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="/user/add" method="post">
+        <form action="/user/add" method="post" autocomplete="off">
           <div class="form-group">
             <label class="control-label">Date</label>
-            <input type="date" name="date" id="dateInput">
+            <input id="datepicker" name="date" />
             <label class="control-label">Time</label>
-            <input type="time" name="time" id="timeInput">
+            <input id="timepicker" name="time" />
           </div>
           <div class="form-group">
             <label for="painLocationTextArea">Where is the pain?</label>

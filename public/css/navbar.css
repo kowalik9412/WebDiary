@@ -32,3 +32,9 @@ h3 {
 .navbar-dark .navbar-nav .show > .nav-link {
   color: #000;
 }
+.col-box {
+  margin-bottom: 10px;
+}
+.table-search {
+  margin-top: 10px;
+}
