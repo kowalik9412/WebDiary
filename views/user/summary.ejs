@@ -98,6 +98,35 @@
     <% } %>
     </tbody>
   </table>
+  <div class="jumbotron">
+    <div class="row w-100">
+        <div class="col-md-3">
+            <div class="card border-info mx-sm-1 p-3">
+                <div class="card border-info shadow text-info p-3 my-card" ><i class="fas fa-chart-bar"></i></div>
+                <div class="text-info text-center mt-3"><h5>Entries</h5></div>
+                <div class="text-info text-center mt-2"><h1><%= statistics.totalNumberOfEntries %></h1></div>
+            </div>
+        </div>
+        <% if(statistics.totalNumberOfPainLocation > 0){ %>
+            <div class="col-md-3">
+            <div class="card border-info mx-sm-1 p-3">
+                <div class="card border-info shadow text-info p-3 my-card" ><i class="fas fa-info"></i></div>
+                <div class="text-info text-center mt-3"><h5>Locations</h5></div>
+                <div class="text-info text-center mt-2"><h1><%= statistics.totalNumberOfPainLocation %></h1></div>
+            </div>
+        </div>
+        <% } %>
+        <% if(statistics.totalNumberOfTriggered > 0){ %>
+            <div class="col-md-3">
+            <div class="card border-info mx-sm-1 p-3">
+                <div class="card border-info shadow text-info p-3 my-card" ><i class="fas fa-fire-alt"></i></div>
+                <div class="text-info text-center mt-3"><h5>Trigger</h5></div>
+                <div class="text-info text-center mt-2"><h1><%= statistics.totalNumberOfTriggered%></h1></div>
+            </div>
+        </div>
+        <% } %>
+    </div>
+</div>
   </div>
 </body>
 

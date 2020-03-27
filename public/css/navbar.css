@@ -38,3 +38,14 @@ h3 {
 .table-search {
   margin-top: 10px;
 }
+.my-card {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 49px;
+  top: -20px;
+  border-radius: 50%;
+}
+.my-card i {
+  text-align: center;
+}

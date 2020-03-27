@@ -175,12 +175,40 @@ exports.postDateSearch = (req, res, next) => {
     'timeStamp.date': { $gte: start, $lte: end }
   })
     .then(entry => {
+      // GET number of all entries
+      const totalNumber = entry.length;
+
+      // GET number of all pain locations
+      let painLocNumber = [];
+
+      entry.forEach(painLocation => {
+        if (!painLocNumber.includes(painLocation.data.painLoc)) {
+          painLocNumber.push(painLocation.data.painLoc);
+        }
+      });
+
+      // GET number of all pain triggers
+      let painTrigNumber = [];
+
+      entry.forEach(painTrigger => {
+        if (!painTrigNumber.includes(painTrigger.data.painTrig)) {
+          painTrigNumber.push(painTrigger.data.painTrig);
+        }
+      });
+
+      const stats = {
+        totalNumberOfEntries: totalNumber,
+        totalNumberOfPainLocation: painLocNumber.length,
+        totalNumberOfTriggered: painTrigNumber.length
+      };
+
       res.render('user/summary', {
         pageTitle: 'Summary',
         entry: entry,
         startDate: start,
         endDate: end,
-        userInput: ''
+        userInput: '',
+        statistics: stats
       });
     })
     .catch(error => console.log(error));
