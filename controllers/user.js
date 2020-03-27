@@ -166,8 +166,8 @@ exports.postFuzzySearch = (req, res, next) => {
 };
 
 exports.postDateSearch = (req, res, next) => {
-  const start = req.body.start;
-  const end = req.body.end;
+  const start = req.body.startDate;
+  const end = req.body.endDate;
   const userId = req.user._id;
 
   Entry.find({

@@ -33,7 +33,9 @@
     </div>
     </nav>
   </div>
-      <div class="container">
+    <div class="container">
+    <h3>Your Entries from <%= startDate %> to <%= endDate %></h3>
+    <div class="container">
     <form action="/user/search" method="post">
       <div class="form-row align-items-center">
         <div class="col-sm-3 my-1">
@@ -49,14 +51,12 @@
         </div>
         <div class="col-auto my-1">
           <button type="submit" class="btn btn-primary">Search/Cancel</button>
+            <a href="/user/home" class="btn btn-primary">Back</a>
           <input type="hidden" name="_csrf" value="<%= csrfToken %>">
         </div>
       </div>
     </form>
   </div>
-    <div class="container">
-    <h3>Your Entries from <%= startDate %> to <%= endDate %></h3>
-    <a href="/user/home" class="btn btn-primary">Back</a>
     <table class="table table-search table-hover">
     <thead>
       <tr>

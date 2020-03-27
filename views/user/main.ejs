@@ -34,26 +34,6 @@
     </nav>
   </div>
 <div>
-  <!-- <div class="container">
-    <form action="/user/search" method="post">
-      <div class="form-row align-items-center">
-        <div class="col-sm-3 my-1">
-          <label class="sr-only" for="inlineFormRecird">Record</label>
-          <input name="searchAnything" type="text" class="form-control" id="inlineFormRecird" placeholder="
-          <% if(userInput) {%>
-            <%= userInput %>
-          <% } else {%>
-            Filter
-          <% } %>">
-        </div>
-        <div class="col-auto my-1">
-          <button type="submit" class="btn btn-primary">Search</button>
-          <a href="/user/home" class="btn btn-primary">Reset</a>
-          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-        </div>
-      </div>
-    </form>
-  </div> -->
   <div class="container">
     <h3>Your Entries</h3>
     <form action="/user/search-date" method="post" autocomplete="off">
@@ -61,10 +41,10 @@
         <div class="col-sm-3 my-1 filter-box">
           <label class="sr-only" for="inlineFormRecird">Date Search</label>
           <div class="col-box">
-            <input id="startDate" name="start" placeholder="Start Date" />
+            <input id="startDate" name="startDate" placeholder="Start Date" />
           </div>
           <div class="col-box">
-            <input id="endDate" name="end" placeholder="End Date" />
+            <input id="endDate" name="endDate" placeholder="End Date" />
           </div>
         </div>
         <div class="col-auto my-1">
