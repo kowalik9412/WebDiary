@@ -151,12 +151,70 @@ exports.postFuzzySearch = (req, res, next) => {
         sort: true
       });
 
+      // GET number of all entries
+      const totalNumber = lookup.length;
+
+      // GET number of all pain locations
+      let painLocNumber = [];
+
+      lookup.forEach(painLocation => {
+        if (!painLocNumber.includes(painLocation.data.painLoc)) {
+          painLocNumber.push(painLocation.data.painLoc);
+        }
+      });
+
+      // GET number of all pain triggers
+      let painTrigNumber = [];
+
+      lookup.forEach(painTrigger => {
+        if (!painTrigNumber.includes(painTrigger.data.painTrig)) {
+          painTrigNumber.push(painTrigger.data.painTrig);
+        }
+      });
+
+      // GET number of all pain relievs
+      let painRelNumber = [];
+
+      lookup.forEach(painRelieved => {
+        if (!painRelNumber.includes(painRelieved.data.painRel)) {
+          painRelNumber.push(painRelieved.data.painRel);
+        }
+      });
+
+      // GET all pain descriptions
+      let painDescNumber = [];
+
+      lookup.forEach(painDesc => {
+        if (!painDescNumber.includes(painDesc.data.painDesc)) {
+          painDescNumber.push(painDesc.data.painDesc);
+        }
+      });
+
+      // GET all pain worsen by
+      let painWorsNumber = [];
+
+      lookup.forEach(painWor => {
+        if (!painWorsNumber.includes(painWor.data.painWors)) {
+          painWorsNumber.push(painWor.data.painWors);
+        }
+      });
+
+      const stats = {
+        totalNumberOfEntries: totalNumber,
+        totalNumberOfPainLocation: painLocNumber.length,
+        totalNumberOfTriggered: painTrigNumber.length,
+        totalNumberOfRelieved: painRelNumber.length,
+        totalNumberOfDescription: painDescNumber.length,
+        totalNumberOfWorsenBy: painWorsNumber.length
+      };
+
       res.render('user/summary', {
         pageTitle: 'Summary',
         entry: lookup,
         startDate: start,
         endDate: end,
-        userInput: userInput
+        userInput: userInput,
+        statistics: stats
       });
     })
     .catch(error => {
@@ -196,10 +254,40 @@ exports.postDateSearch = (req, res, next) => {
         }
       });
 
+      // GET number of all pain relievs
+      let painRelNumber = [];
+
+      entry.forEach(painRelieved => {
+        if (!painRelNumber.includes(painRelieved.data.painRel)) {
+          painRelNumber.push(painRelieved.data.painRel);
+        }
+      });
+
+      // GET all pain descriptions
+      let painDescNumber = [];
+
+      entry.forEach(painDesc => {
+        if (!painDescNumber.includes(painDesc.data.painDesc)) {
+          painDescNumber.push(painDesc.data.painDesc);
+        }
+      });
+
+      // GET all pain worsen by
+      let painWorsNumber = [];
+
+      entry.forEach(painWor => {
+        if (!painWorsNumber.includes(painWor.data.painWors)) {
+          painWorsNumber.push(painWor.data.painWors);
+        }
+      });
+
       const stats = {
         totalNumberOfEntries: totalNumber,
         totalNumberOfPainLocation: painLocNumber.length,
-        totalNumberOfTriggered: painTrigNumber.length
+        totalNumberOfTriggered: painTrigNumber.length,
+        totalNumberOfRelieved: painRelNumber.length,
+        totalNumberOfDescription: painDescNumber.length,
+        totalNumberOfWorsenBy: painWorsNumber.length
       };
 
       res.render('user/summary', {
