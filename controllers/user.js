@@ -5,14 +5,14 @@ const fuzzySearch = require('fuzzy-search');
 exports.getMainPage = (req, res, next) => {
   const userId = req.user._id;
   Entry.find({ 'metadata.userId': userId })
-    .then(entries => {
+    .then((entries) => {
       res.render('user/main', {
         pageTitle: 'Home',
         entry: entries,
-        userInput: ''
+        userInput: '',
       });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 };
@@ -20,13 +20,13 @@ exports.getMainPage = (req, res, next) => {
 exports.getEditRecord = (req, res, next) => {
   const id = req.params.id;
   Entry.findById(id)
-    .then(entry => {
+    .then((entry) => {
       res.render('user/edit', {
         pageTitle: 'Edit Entry',
-        entry: entry
+        entry: entry,
       });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 };
@@ -45,7 +45,7 @@ exports.postEditRecord = (req, res, next) => {
   const entry = {
     timeStamp: {
       date: date,
-      time: time
+      time: time,
     },
     data: {
       painLoc: painLoc,
@@ -53,15 +53,15 @@ exports.postEditRecord = (req, res, next) => {
       painTrig: painTrig,
       painRel: painRel,
       painWors: painWor,
-      painLev: painLev
-    }
+      painLev: painLev,
+    },
   };
 
   Entry.findByIdAndUpdate(id, entry)
-    .then(entry => {
+    .then((entry) => {
       res.redirect('/user/home');
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 };
@@ -81,7 +81,7 @@ exports.postAddRecord = (req, res, next) => {
   const entry = new Entry({
     timeStamp: {
       date: date,
-      time: time
+      time: time,
     },
     data: {
       painLoc: painLoc,
@@ -89,16 +89,16 @@ exports.postAddRecord = (req, res, next) => {
       painTrig: painTrig,
       painRel: painRel,
       painWors: painWor,
-      painLev: painLev
+      painLev: painLev,
     },
     metadata: {
       dateCreated: dateCreated,
-      userId: req.user._id
-    }
+      userId: req.user._id,
+    },
   });
   entry
     .save()
-    .then(result => {
+    .then((result) => {
       User.findOne({ _id: userId }, (error, user) => {
         if (error) {
           console.log(error);
@@ -110,7 +110,7 @@ exports.postAddRecord = (req, res, next) => {
         }
       });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 };
@@ -119,10 +119,10 @@ exports.postDeleteRecord = (req, res, next) => {
   const id = req.params.id;
 
   Entry.findByIdAndDelete(id)
-    .then(result => {
+    .then((result) => {
       res.redirect('/user/home');
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 };
@@ -135,9 +135,9 @@ exports.postFuzzySearch = (req, res, next) => {
 
   Entry.find({
     'metadata.userId': userId,
-    'timeStamp.date': { $gte: start, $lte: end }
+    'timeStamp.date': { $gte: start, $lte: end },
   })
-    .then(entries => {
+    .then((entries) => {
       const searchOptions = new fuzzySearch(entries, [
         'timeStamp.time',
         'data.painLoc',
@@ -145,10 +145,10 @@ exports.postFuzzySearch = (req, res, next) => {
         'data.painTrig',
         'data.painRel',
         'data.painWors',
-        'data.painLev'
+        'data.painLev',
       ]);
       const lookup = searchOptions.search(userInput, {
-        sort: true
+        sort: true,
       });
 
       // GET number of all entries
@@ -157,7 +157,7 @@ exports.postFuzzySearch = (req, res, next) => {
       // GET number of all pain locations
       let painLocNumber = [];
 
-      lookup.forEach(painLocation => {
+      lookup.forEach((painLocation) => {
         if (!painLocNumber.includes(painLocation.data.painLoc)) {
           painLocNumber.push(painLocation.data.painLoc);
         }
@@ -166,7 +166,7 @@ exports.postFuzzySearch = (req, res, next) => {
       // GET number of all pain triggers
       let painTrigNumber = [];
 
-      lookup.forEach(painTrigger => {
+      lookup.forEach((painTrigger) => {
         if (!painTrigNumber.includes(painTrigger.data.painTrig)) {
           painTrigNumber.push(painTrigger.data.painTrig);
         }
@@ -175,7 +175,7 @@ exports.postFuzzySearch = (req, res, next) => {
       // GET number of all pain relievs
       let painRelNumber = [];
 
-      lookup.forEach(painRelieved => {
+      lookup.forEach((painRelieved) => {
         if (!painRelNumber.includes(painRelieved.data.painRel)) {
           painRelNumber.push(painRelieved.data.painRel);
         }
@@ -184,7 +184,7 @@ exports.postFuzzySearch = (req, res, next) => {
       // GET all pain descriptions
       let painDescNumber = [];
 
-      lookup.forEach(painDesc => {
+      lookup.forEach((painDesc) => {
         if (!painDescNumber.includes(painDesc.data.painDesc)) {
           painDescNumber.push(painDesc.data.painDesc);
         }
@@ -193,7 +193,7 @@ exports.postFuzzySearch = (req, res, next) => {
       // GET all pain worsen by
       let painWorsNumber = [];
 
-      lookup.forEach(painWor => {
+      lookup.forEach((painWor) => {
         if (!painWorsNumber.includes(painWor.data.painWors)) {
           painWorsNumber.push(painWor.data.painWors);
         }
@@ -205,7 +205,7 @@ exports.postFuzzySearch = (req, res, next) => {
         totalNumberOfTriggered: painTrigNumber.length,
         totalNumberOfRelieved: painRelNumber.length,
         totalNumberOfDescription: painDescNumber.length,
-        totalNumberOfWorsenBy: painWorsNumber.length
+        totalNumberOfWorsenBy: painWorsNumber.length,
       };
 
       res.render('user/summary', {
@@ -214,10 +214,12 @@ exports.postFuzzySearch = (req, res, next) => {
         startDate: start,
         endDate: end,
         userInput: userInput,
-        statistics: stats
+        userInputFrom: '',
+        userInputTo: '',
+        statistics: stats,
       });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
       res.redirect('/user/home');
     });
@@ -230,16 +232,16 @@ exports.postDateSearch = (req, res, next) => {
 
   Entry.find({
     'metadata.userId': userId,
-    'timeStamp.date': { $gte: start, $lte: end }
+    'timeStamp.date': { $gte: start, $lte: end },
   })
-    .then(entry => {
+    .then((entry) => {
       // GET number of all entries
       const totalNumber = entry.length;
 
       // GET number of all pain locations
       let painLocNumber = [];
 
-      entry.forEach(painLocation => {
+      entry.forEach((painLocation) => {
         if (!painLocNumber.includes(painLocation.data.painLoc)) {
           painLocNumber.push(painLocation.data.painLoc);
         }
@@ -248,7 +250,7 @@ exports.postDateSearch = (req, res, next) => {
       // GET number of all pain triggers
       let painTrigNumber = [];
 
-      entry.forEach(painTrigger => {
+      entry.forEach((painTrigger) => {
         if (!painTrigNumber.includes(painTrigger.data.painTrig)) {
           painTrigNumber.push(painTrigger.data.painTrig);
         }
@@ -257,7 +259,7 @@ exports.postDateSearch = (req, res, next) => {
       // GET number of all pain relievs
       let painRelNumber = [];
 
-      entry.forEach(painRelieved => {
+      entry.forEach((painRelieved) => {
         if (!painRelNumber.includes(painRelieved.data.painRel)) {
           painRelNumber.push(painRelieved.data.painRel);
         }
@@ -266,7 +268,7 @@ exports.postDateSearch = (req, res, next) => {
       // GET all pain descriptions
       let painDescNumber = [];
 
-      entry.forEach(painDesc => {
+      entry.forEach((painDesc) => {
         if (!painDescNumber.includes(painDesc.data.painDesc)) {
           painDescNumber.push(painDesc.data.painDesc);
         }
@@ -275,7 +277,7 @@ exports.postDateSearch = (req, res, next) => {
       // GET all pain worsen by
       let painWorsNumber = [];
 
-      entry.forEach(painWor => {
+      entry.forEach((painWor) => {
         if (!painWorsNumber.includes(painWor.data.painWors)) {
           painWorsNumber.push(painWor.data.painWors);
         }
@@ -287,7 +289,7 @@ exports.postDateSearch = (req, res, next) => {
         totalNumberOfTriggered: painTrigNumber.length,
         totalNumberOfRelieved: painRelNumber.length,
         totalNumberOfDescription: painDescNumber.length,
-        totalNumberOfWorsenBy: painWorsNumber.length
+        totalNumberOfWorsenBy: painWorsNumber.length,
       };
 
       res.render('user/summary', {
@@ -296,8 +298,142 @@ exports.postDateSearch = (req, res, next) => {
         startDate: start,
         endDate: end,
         userInput: '',
-        statistics: stats
+        userInputFrom: '',
+        userInputTo: '',
+        statistics: stats,
       });
     })
-    .catch(error => console.log(error));
+    .catch((error) => {
+      console.log(error);
+      res.redirect('/user/home');
+    });
+};
+
+exports.postSearchPainLevel = (req, res, next) => {
+  const userId = req.user._id;
+  const from = parseInt(req.body.painLevel0);
+  const to = parseInt(req.body.painLevel1);
+  const start = req.body.startDate;
+  const end = req.body.endDate;
+  let errors = [];
+
+  console.log(to);
+
+  if (from === 0 && to === 0) {
+    errors.push({ message: 'Please specify pain levels' });
+    return res.render('user/summary', {
+      pageTitle: 'Summary',
+      entry: [],
+      startDate: start,
+      endDate: end,
+      userInputFrom: from,
+      userInputTo: to,
+      userInput: '',
+      statistics: [],
+      errors: errors,
+    });
+  } else if (from > to) {
+    errors.push({ message: 'Invalid input. "From" is greater than "to"' });
+    return res.render('user/summary', {
+      pageTitle: 'Summary',
+      entry: [],
+      startDate: start,
+      endDate: end,
+      userInputFrom: from,
+      userInputTo: to,
+      userInput: '',
+      statistics: [],
+      errors: errors,
+    });
+  }
+
+  Entry.find({
+    'metadata.userId': userId,
+    'data.painLev': { $gte: from, $lte: to },
+  })
+    .then((entries) => {
+      if (!entries) {
+        return res.render('user/summary', {
+          pageTitle: 'Summary',
+          entry: [],
+          startDate: start,
+          endDate: end,
+          userInputFrom: from,
+          userInputTo: to,
+          userInput: '',
+          statistics: [],
+        });
+      } else {
+        // GET number of all entries
+        const totalNumber = entries.length;
+
+        // GET number of all pain locations
+        let painLocNumber = [];
+
+        entries.forEach((painLocation) => {
+          if (!painLocNumber.includes(painLocation.data.painLoc)) {
+            painLocNumber.push(painLocation.data.painLoc);
+          }
+        });
+
+        // GET number of all pain triggers
+        let painTrigNumber = [];
+
+        entries.forEach((painTrigger) => {
+          if (!painTrigNumber.includes(painTrigger.data.painTrig)) {
+            painTrigNumber.push(painTrigger.data.painTrig);
+          }
+        });
+
+        // GET number of all pain relievs
+        let painRelNumber = [];
+
+        entries.forEach((painRelieved) => {
+          if (!painRelNumber.includes(painRelieved.data.painRel)) {
+            painRelNumber.push(painRelieved.data.painRel);
+          }
+        });
+
+        // GET all pain descriptions
+        let painDescNumber = [];
+
+        entries.forEach((painDesc) => {
+          if (!painDescNumber.includes(painDesc.data.painDesc)) {
+            painDescNumber.push(painDesc.data.painDesc);
+          }
+        });
+
+        // GET all pain worsen by
+        let painWorsNumber = [];
+
+        entries.forEach((painWor) => {
+          if (!painWorsNumber.includes(painWor.data.painWors)) {
+            painWorsNumber.push(painWor.data.painWors);
+          }
+        });
+
+        const stats = {
+          totalNumberOfEntries: totalNumber,
+          totalNumberOfPainLocation: painLocNumber.length,
+          totalNumberOfTriggered: painTrigNumber.length,
+          totalNumberOfRelieved: painRelNumber.length,
+          totalNumberOfDescription: painDescNumber.length,
+          totalNumberOfWorsenBy: painWorsNumber.length,
+        };
+        return res.render('user/summary', {
+          pageTitle: 'Summary',
+          entry: entries,
+          startDate: start,
+          endDate: end,
+          userInputFrom: from,
+          userInputTo: to,
+          userInput: '',
+          statistics: stats,
+        });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.redirect('/user/home');
+    });
 };

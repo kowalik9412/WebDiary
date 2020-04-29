@@ -8,14 +8,14 @@ const sendGrid = require('nodemailer-sendgrid-transport');
 const transporter = nodemailer.createTransport(
   sendGrid({
     auth: {
-      api_key: `${process.env.NODEMAILERAPIKEY}`
-    }
+      api_key: `${process.env.NODEMAILERAPIKEY}`,
+    },
   })
 );
 
 exports.getLoginPage = (req, res, next) => {
   res.render('auth/login', {
-    pageTitle: 'Sign In Page'
+    pageTitle: 'Sign In Page',
   });
 };
 
@@ -23,7 +23,7 @@ exports.postLogin = (req, res, next) => {
   passport.authenticate('local', {
     successRedirect: '/user/home',
     failureRedirect: '/auth/login',
-    failureFlash: true
+    failureFlash: true,
   })(req, res, next);
 };
 
@@ -37,8 +37,8 @@ exports.getRegisterPage = (req, res, next) => {
   res.render('auth/register', {
     pageTitle: 'Sign Up',
     userInput: {
-      email: ''
-    }
+      email: '',
+    },
   });
 };
 
@@ -62,43 +62,42 @@ exports.postRegister = (req, res, next) => {
     // }
     if (password !== password2) {
       errors.push({
-        message: 'Passwords do not match'
+        message: 'Passwords do not match',
       });
     }
 
     if (errors.length > 0) {
       res.render('auth/register', {
         pageTitle: 'Sign Up',
-        userInput: {
-          email
-        },
-        errors
+        userInput: email,
+        errors,
       });
     } else {
       User.findOne({ email: email })
-        .then(user => {
+        .then((user) => {
           if (user) {
             errors.push({
-              message: 'User with this email exists'
+              message: 'User with this email exists',
             });
             res.render('auth/register', {
               pageTitle: 'Sign Up - User Exists',
-              errors
+              userInput: email,
+              errors,
             });
           } else {
             bcrypt
               .hash(password, 10)
-              .then(hashedPassword => {
+              .then((hashedPassword) => {
                 const user = new User({
                   email: email,
                   password: hashedPassword,
                   confirmToken: token,
                   confirmTokenTime: Date.now() + 3600000, //1hr
-                  isConfirmed: false
+                  isConfirmed: false,
                 });
                 user.save();
               })
-              .then(result => {
+              .then((result) => {
                 req.flash('success_message', 'Please confirm your email');
                 res.redirect('login');
                 transporter.sendMail({
@@ -107,23 +106,23 @@ exports.postRegister = (req, res, next) => {
                   subject: 'Verify Email',
                   html: `
                     <p>Click <a href="http://localhost:1010/auth/login/verifyemail/${token}">here</a> to verify your email</p>
-                  `
+                  `,
                 });
               })
-              .catch(error => {
+              .catch((error) => {
                 errors.push({
                   message:
-                    'Something went wrong with hashing password. Try again'
+                    'Something went wrong with hashing password. Try again',
                 });
                 res.render('auth/register', {
                   pageTitle: 'Sign Up',
-                  errors
+                  errors,
                 });
                 console.log(error);
               });
           }
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     }
@@ -132,7 +131,7 @@ exports.postRegister = (req, res, next) => {
 
 exports.getResetPage = (req, res, next) => {
   res.render('auth/reset', {
-    pageTitle: 'Reset your password'
+    pageTitle: 'Reset your password',
   });
 };
 
@@ -146,7 +145,7 @@ exports.postReset = (req, res, next) => {
 
     const token = buffer.toString('hex');
     User.findOne({ email: email })
-      .then(user => {
+      .then((user) => {
         if (!user) {
           req.flash('error_message', 'Invalid credentials');
           return res.redirect('/auth/reset');
@@ -156,7 +155,7 @@ exports.postReset = (req, res, next) => {
         user.resetTokenTime = Date.now() + 3600000; // 1hr
         return user.save();
       })
-      .then(result => {
+      .then((result) => {
         req.flash('success_message', 'Check your email');
         res.redirect('login');
         transporter.sendMail({
@@ -165,10 +164,10 @@ exports.postReset = (req, res, next) => {
           subject: 'Reset Password',
           html: `
             <p>Click <a href="http://localhost:1010/auth/reset/newpassword/${token}">here</a> to reset your password now</p>
-          `
+          `,
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   });
@@ -177,14 +176,14 @@ exports.postReset = (req, res, next) => {
 exports.getNewPassword = (req, res, next) => {
   const token = req.params.token;
   User.findOne({ resetToken: token, resetTokenTime: { $gt: Date.now() } })
-    .then(user => {
+    .then((user) => {
       res.render('auth/password', {
         pageTitle: 'Update your password',
         userId: user._id.toString(),
-        passwordToken: token
+        passwordToken: token,
       });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 };
@@ -204,30 +203,30 @@ exports.postNewPassword = (req, res, next) => {
   if (errors.length > 0) {
     res.render('auth/register', {
       pageTitle: 'Sign Up',
-      errors
+      errors,
     });
   } else {
     User.findOne({
       resetToken: passwordToken,
       resetTokenTime: { $gt: Date.now() },
-      _id: userId
+      _id: userId,
     })
-      .then(user => {
+      .then((user) => {
         resetUser = user;
         bcrypt
           .hash(password1, 10)
-          .then(hashedPassword => {
+          .then((hashedPassword) => {
             resetUser.password = hashedPassword;
             resetUser.resetToken = undefined;
             resetUser.resetTokenTime = undefined;
             return resetUser.save();
           })
-          .then(result => {
+          .then((result) => {
             req.flash('success_message', 'Password has been updated');
             res.redirect('/auth/login');
           });
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -236,15 +235,15 @@ exports.postNewPassword = (req, res, next) => {
 exports.getVerifyEmailPage = (req, res, next) => {
   const token = req.params.token;
 
-  const sleep = milliseconds => {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
+  const sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
   };
 
   User.findOne({
     confirmToken: token,
-    confirmTokenTime: { $gt: Date.now() }
+    confirmTokenTime: { $gt: Date.now() },
   })
-    .then(user => {
+    .then((user) => {
       if (!user) {
         req.flash(
           'failure_message',
@@ -261,7 +260,7 @@ exports.getVerifyEmailPage = (req, res, next) => {
         return res.redirect('/auth/login');
       });
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 };

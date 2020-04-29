@@ -38,6 +38,7 @@
     <div class="container">
     <form action="/user/search" method="post">
       <div class="form-row align-items-center">
+        <label for="desc">Fuzzy Search</label>
         <div class="col-sm-3 my-1">
           <label class="sr-only" for="inlineFormRecird">Record</label>
           <input name="searchAnything" type="text" class="form-control" id="inlineFormRecird" placeholder="
@@ -56,6 +57,33 @@
         </div>
       </div>
     </form>
+    <form action="/user/search-level" method="post">
+      <div class="form-row align-items-center">
+        <label for="desc">Pain Level Search</label>
+        <div class="col-sm-3 my-1">
+          <label class="sr-only" for="inlineFormRecird">Pain Level Search</label>
+          <input name="painLevel0" type="number" min="0" max="10" class="form-control" placeholder="
+          <% if(userInputFrom) {%>
+            <%= userInputFrom %>
+          <% } else {%>
+            From
+          <% } %>">
+          <input name="painLevel1" type="number" min="0" max="10" class="form-control" placeholder="
+          <% if(userInputTo) {%>
+            <%= userInputTo %>
+          <% } else {%>
+            To
+          <% } %>">
+        </div>
+        <div class="col-auto my-1">
+          <button type="submit" class="btn btn-primary">Search</button>
+          <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+          <input type="hidden" name="startDate" value="<%= startDate %>">
+          <input type="hidden" name="endDate" value="<%= endDate %>">
+        </div>
+      </div>
+    </form>
+    <%- include('../includes/errors.ejs') %>
   </div>
     <table class="table table-search table-hover">
     <thead>
@@ -100,6 +128,7 @@
   </table>
   <div class="jumbotron">
     <div class="row w-100">
+      <% if(statistics.totalNumberOfEntries > 0){ %>
         <div class="col-md-3">
             <div class="card border-info mx-sm-1 p-3">
                 <div class="card border-info shadow text-info p-3 my-card" ><i class="fas fa-chart-bar"></i></div>
@@ -107,6 +136,7 @@
                 <div class="text-info text-center mt-2"><h1><%= statistics.totalNumberOfEntries %></h1></div>
             </div>
         </div>
+      <% } %>
         <% if(statistics.totalNumberOfPainLocation > 0){ %>
         <div class="col-md-3">
             <div class="card border-info mx-sm-1 p-3">

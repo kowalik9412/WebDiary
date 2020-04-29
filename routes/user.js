@@ -27,4 +27,11 @@ router.post('/search', authentication, userController.postFuzzySearch);
 // POST Date Search
 router.post('/search-date', authentication, userController.postDateSearch);
 
+// POST Search Pain painLevel
+router.post(
+  '/search-level',
+  authentication,
+  userController.postSearchPainLevel
+);
+
 module.exports = router;
