@@ -20,12 +20,12 @@ const csrfProtect = csrf();
 
 // Global Variables
 const PORT = process.env.PORT || 1010;
-// const MONGODB_URI = `${process.env.MONGODB}`;
-const MONGODB_URI = `${process.env.MONGODBLOCAL}`;
+const MONGODB_URI = `${process.env.MONGODB}`;
+// const MONGODB_URI = `${process.env.MONGODBLOCAL}`;
 const OPTS = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
 };
 
 // Middleware
@@ -37,7 +37,7 @@ app.use(
   session({
     secret: 'somerandomstring',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
   })
 );
 app.use(passport.initialize());
@@ -64,7 +64,7 @@ app.use('/', indexRoutes);
 
 app.use((req, res, next) => {
   res.status(404).render('error/404', {
-    pageTitle: '404 Page not found!'
+    pageTitle: '404 Page not found!',
   });
 });
 
@@ -72,11 +72,11 @@ app.use((req, res, next) => {
 mongoose
   .set('useFindAndModify', false)
   .connect(MONGODB_URI, OPTS)
-  .then(result => {
+  .then((result) => {
     app.listen(PORT, () => {
       console.log(`\n\n Server running on PORT ${PORT}\n\n`);
     });
   })
-  .catch(err => {
+  .catch((err) => {
     console.log(err);
   });

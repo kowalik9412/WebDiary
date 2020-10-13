@@ -55,7 +55,8 @@
       <textarea class="form-control" id="painWorseTextArea" name="painWorse" rows="2"><%= entry.data.painWors %></textarea>
     </div>
     <div class="form-group">
-      <label for="painLevelSelect">Pain Level (0 - no pain, 10 - severe)</label>
+      <p>Previous Pain Level: <%= entry.data.painLev %></p>
+      <label for="painLevelSelect">New Pain Level (0 - no pain, 10 - severe)</label>
       <select class="form-control" id="painLevelSelect" name="painLevel" value="<%= entry.data.painLev %>">
         <option value="0">0</option>
         <option value="1">1</option>
