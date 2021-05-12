@@ -31,7 +31,7 @@
     "express-validator": "^6.4.0",
     "fuzzy-search": "^3.2.1",
     "mongoose": "^5.8.11",
-    "nodemailer": "^6.4.3",
+    "nodemailer": "^6.4.16",
     "nodemailer-sendgrid-transport": "^0.2.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0"
